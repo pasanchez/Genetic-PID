@@ -33,7 +33,8 @@ classdef Pid_Agent < handle
 %             step(this.sys);
 %             pause;
             this.info = stepinfo(this.sys);
-            this.score = 1 / (1 + this.info.Overshoot + this.info.RiseTime + this.info.Undershoot +  1 ) ^ 2;
+            this.score = (1 / (1 + this.info.SettlingTime*10 + this.info.Overshoot) ^ 2)*1000;
+%             fprintf('%d\n',this.score);
             score = this.score;
         end
     end

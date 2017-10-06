@@ -7,7 +7,7 @@ population_size = 100;
 population_to_keep = 30;
 
 %% System
-TF = tf([2 1],[1 2 1]);
+TF = tf([ 1 2],[1 2 1]);
 
 %% initial population
 
@@ -18,6 +18,7 @@ end
 %% loop
 
 f = figure;
+z = 1;
 while true
     % simulate population & create mating pool
     best_score = 0;
@@ -33,9 +34,15 @@ while true
         end
     end
     % show best response
-    fprintf('Kp: %f Ki: %f Kd: %f. O: %f RT: %f U: %f\n',best.genome(1),best.genome(2),best.genome(3), ...
-        best.info.Overshoot,best.info.RiseTime, best.info.Undershoot);
+    fprintf('Kp: %f Ki: %f Kd: %f. O: %f ST: %f\n',best.genome(1),best.genome(2),best.genome(3), ...
+        best.info.Overshoot,best.info.SettlingTime);
+    subplot(1,2,1)
     step(best.sys);
+    best_points(z) = best.score;
+    z = z +1;
+    subplot(1,2,2)
+    plot(best_points);
+    title('Max score in each generation.');
     pause(0.01);
     % keep some agents from old population
     for i=1:population_to_keep
